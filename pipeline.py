@@ -6,6 +6,8 @@ import floss
 import find_imports
 import pickle
 
+from utilities import NUMBER_OF_FILES, ONLY_STATIC, MINERS_PATH
+
 network_functions = [
     "connect",
     "send",
@@ -40,13 +42,25 @@ def reload_features():
         features = pickle.load(f)
     return features
 
-# Create a csv file with the features and the labels for each Malware
-def create_csv():
+# Create a df file with the features and the labels for each Malware
+def create_df():
+    # create a pandas df with the features
+    features = reload_features()
+    df = pd.DataFrame(columns=features)
+    miners_dir = os.path.join(os.getcwd(), MINERS_PATH)
+    for file in os.listdir(miners_dir)[:NUMBER_OF_FILES]:
+        
+        # get the imports of each malware
+        imports_to_freq = find_imports.get_all_files_imports()
+        # get the entropy of each malware
+        entropy = floss.get_entropy()
+        # get the floss info of each malware
+        strings, has_ip, has_url, has_domain = floss.get_floss_info()
 
 
 
 def main():
-    # create_features()
+    create_features()
     # features = reload_features()
     # print(features)
 

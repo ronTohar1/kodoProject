@@ -36,7 +36,6 @@ def get_file_imports(filename):
     dict1 = {}
     extract_functions(dict1,filename)
     extract_libraries(dict1,filename)
-    # Remo
     return dict1.keys()
 
 def get_file_libraries(filename):
