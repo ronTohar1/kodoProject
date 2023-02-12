@@ -1,4 +1,4 @@
-NUMBER_OF_FILES = 10
+NUMBER_OF_FILES = 400
 ONLY_STATIC = True
 MINERS_PATH = "../binaries/miners"
 MALWARE_PATH = "../binaries/malware"
