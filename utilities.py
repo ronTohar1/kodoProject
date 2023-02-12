@@ -1,6 +1,7 @@
 NUMBER_OF_FILES = 1
 NUMBER_OF_MALWARE = 1
 NUMBER_OF_BENIGN = NUMBER_OF_MALWARE
+NAME_OF_CSV = "miners.csv"
 ONLY_STATIC = True
 MINERS_PATH = "../binaries/miners"
 MALWARE_PATH = "../binaries/malware"

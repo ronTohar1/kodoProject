@@ -8,7 +8,7 @@ import entropy as ent
 import pickle
 from tqdm import tqdm
 from utilities import *
-
+SAVE_EVERY = 20
 network_functions = [
     "connect",
     "send",
@@ -25,13 +25,11 @@ network_functions = [
 ]
 
 def create_features():
-    featuers = []
     imports_to_freq = find_imports.get_all_files_imports()
     used_strings = imports_to_freq.keys() # strings of the imports being used
 
     features = list(set(used_strings) | set(network_functions)) + ["has_ip","has_url","has_domain"] + ["entropy"] + ["label"]
-
-
+    features.sort()
     # save features with pickle but first delete the old one
     if os.path.exists("features.pkl"):
         os.remove("features.pkl")
@@ -44,9 +42,13 @@ def reload_features():
     return features
 
 def add_directory(df, directory, label, num_of_files):
+    
     features = df.columns
     print("*****Adding directory: " + directory.split("/")[-1]+"*****")
+    counter = 0
     for file in tqdm(os.listdir(directory)[:num_of_files]):
+        if counter > 0 and counter % SAVE_EVERY == 0:
+            df.to_csv(NAME_OF_CSV)
         file = os.path.join(directory, file)
         # get the imports of each malware
         imports = find_imports.get_file_imports(file)
@@ -91,13 +93,11 @@ def create_df():
     return df
 
 
-
-
 def main():
     # create_features()
     df = create_df()
     print(df)
-    df.to_csv("miners.csv")
+    df.to_csv(NAME_OF_CSV)
 
 if __name__ == "__main__":
     main()
