@@ -6,8 +6,8 @@ import floss
 import find_imports
 import entropy as ent
 import pickle
-
-from utilities import NUMBER_OF_FILES, ONLY_STATIC, MINERS_PATH, MALWARE_PATH, BENIGN_PATH, MINER_LABEL, NON_MINER_LABEL
+from tqdm import tqdm
+from utilities import *
 
 network_functions = [
     "connect",
@@ -43,9 +43,10 @@ def reload_features():
         features = pickle.load(f)
     return features
 
-def add_directory(df, directory, label):
+def add_directory(df, directory, label, num_of_files):
     features = df.columns
-    for file in os.listdir(directory)[:NUMBER_OF_FILES]:
+    print("*****Adding directory: " + directory.split("/")[-1]+"*****")
+    for file in tqdm(os.listdir(directory)[:num_of_files]):
         file = os.path.join(directory, file)
         # get the imports of each malware
         imports = find_imports.get_file_imports(file)
@@ -73,7 +74,9 @@ def add_directory(df, directory, label):
                 new_row[feature] = label
             else:
                 new_row[feature] = 0
-        df = df.append(new_row, ignore_index=True)
+        new_row = pd.Series(new_row)
+        # add row using pd.concat
+        df = pd.concat([df, new_row.to_frame().T], ignore_index=True, sort=False)
     return df
 
 # Create a df file with the features and the labels for each Malware
@@ -82,8 +85,10 @@ def create_df():
     features = reload_features()
     df = pd.DataFrame(columns=features)
     miners_dir = os.path.join(os.getcwd(), MINERS_PATH)
-    df = add_directory(df,miners_dir, MINER_LABEL)
-    print(df)
+    df = add_directory(df,miners_dir, MINER_LABEL, NUMBER_OF_FILES)
+    df = add_directory(df,MALWARE_PATH, NON_MINER_LABEL, NUMBER_OF_MALWARE)
+    df = add_directory(df,BENIGN_PATH, NON_MINER_LABEL, NUMBER_OF_BENIGN)
+    return df
 
 
 
@@ -92,6 +97,7 @@ def main():
     # create_features()
     df = create_df()
     print(df)
+    df.to_csv("miners.csv")
 
 if __name__ == "__main__":
     main()
