@@ -1,6 +1,8 @@
 import math
 import os 
 
+from utilities import NUMBER_OF_FILES, ONLY_STATIC, MINERS_PATH
+
 def binary_file_entropy(filename):
     with open(filename, "rb") as f:
         binary_data = f.read()
@@ -23,10 +25,10 @@ def binary_file_entropy(filename):
 
 def main():
     cwd = os.getcwd()
-    malwares = os.path.join(cwd,"binaries\miners")
+    malwares = os.path.join(cwd, MINERS_PATH)
     for file in os.listdir(malwares)[:5]:
         filename = os.path.join(malwares, file)
         entropy = binary_file_entropy(filename)
-        print("Entropy of binary file '{}': {:.2f}".format(filename, entropy))
+    return entropy
 
 main()

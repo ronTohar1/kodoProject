@@ -3,7 +3,7 @@ import re
 import os
 import json
 
-from utilities import NUMBER_OF_FILES, ONLY_STATIC
+from utilities import NUMBER_OF_FILES, ONLY_STATIC, MINERS_PATH
 
 
 def extract_strings(filename):
@@ -23,22 +23,17 @@ def extract_strings(filename):
 
     return all_strings
 
-def main():
-    cwd = os.getcwd()
-    malwares = os.path.join(cwd,"binaries\miners")
-    for file in os.listdir(malwares)[:NUMBER_OF_FILES]:
-        filename = os.path.join(malwares, file)
-        strings = extract_strings(filename)
-        # check if strings contain ips or urls
-        has_ip ,has_url, has_domain = False, False, False
-        for string in strings:
-            if re.search(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",string):
-                has_ip = True
-            if re.search(r"www\.\w+\.\w+",string):
-                has_url = True
-            domain_pattern = r'[a-zA-Z0-9]+\.[a-zA-Z]{2,}'
-            if re.search(domain_pattern,string):
-                has_domain = True
-        return strings, has_ip, has_url, has_domain
-main()
-# to_out()
+
+def get_floss_info(filename):
+    strings = extract_strings(filename)
+    # check if strings contain ips or urls
+    has_ip ,has_url, has_domain = False, False, False
+    for string in strings:
+        if re.search(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}",string):
+            has_ip = True
+        if re.search(r"www\.\w+\.\w+",string):
+            has_url = True
+        domain_pattern = r'[a-zA-Z0-9]+\.[a-zA-Z]{2,}'
+        if re.search(domain_pattern,string):
+            has_domain = True
+    return strings, has_ip, has_url, has_domain

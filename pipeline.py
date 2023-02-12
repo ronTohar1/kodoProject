@@ -23,12 +23,12 @@ network_functions = [
 
 def create_features():
     featuers = []
-    imports_to_freq = find_imports.main()
-    used_strings = imports_to_freq.keys()
-    # strings, has_ip, has_url, has_domain = floss.main()
+    imports_to_freq = find_imports.get_all_files_imports()
+    used_strings = imports_to_freq.keys() # strings of the imports being used
 
-    # print(used_strings)
-    features = list(set(used_strings) | set(network_functions)) + ["has_ip","has_url","has_domain"] + ["entropy"]
+    features = list(set(used_strings) | set(network_functions)) + ["has_ip","has_url","has_domain"] + ["entropy"] + ["label"]
+
+
     # save features with pickle but first delete the old one
     if os.path.exists("features.pkl"):
         os.remove("features.pkl")
@@ -40,8 +40,13 @@ def reload_features():
         features = pickle.load(f)
     return features
 
+# Create a csv file with the features and the labels for each Malware
+def create_csv():
+
+
+
 def main():
-    create_features()
+    # create_features()
     # features = reload_features()
     # print(features)
 
