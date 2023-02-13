@@ -1,4 +1,5 @@
 import pickle
+import pandas as pd
 from utilities import *
 
 def save_model(model):
@@ -10,5 +11,6 @@ def load_model():
         return pickle.load(f)
 
 def load_dataset():
-    with open(DATASET_PATH, 'rb') as f:
-        return pickle.load(f)
+    df = pd.read_csv(DATASET_PATH, index_col=0)
+    print(df)
+    return df

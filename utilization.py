@@ -34,3 +34,6 @@ def get_process_utilization(process):
         print("")
     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
         pass
+
+def get_network_connections(process):
+    pass

@@ -8,13 +8,15 @@ from utilities import NUMBER_OF_FILES, ONLY_STATIC, MINERS_PATH
 
 def extract_strings(filename):
 
-    command = f"floss {filename} --only static -j"
+    command = f"floss \"{filename}\" --only static -j"
     if not ONLY_STATIC:
-        command = f"floss {filename} -j"
+        command = f"floss \"{filename}\" -j"
     
     result = subprocess.run(command, shell=True,stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     # convert output from json to dictionary
+
     output = result.stdout.decode()
+    
     output = json.loads(output)
     strings =  output["strings"]
     all_strings = []
