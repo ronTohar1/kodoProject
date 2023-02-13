@@ -63,7 +63,7 @@ def evaluate_by_epochs():
     plt.legend()
     plt.show()
 
-def evaluate_by_kfold():
+def evaluate_model():
     mlp = load_model()
     mlp.verbose = 10
     df = load_dataset()
@@ -98,7 +98,7 @@ def evaluate_by_kfold():
     plt.show()    
 
 def main():
-    evaluate_by_kfold()
+    evaluate_model()
 
 if __name__ == "__main__":
     main()
