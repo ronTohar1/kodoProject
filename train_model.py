@@ -10,7 +10,7 @@ from save_and_load import load_dataset, load_model, save_model
 from utilities import *
 from matplotlib import pyplot as plt
 
-def train_different_models():
+def train_models():
     # Load the data
     data = load_dataset()
     # shuffle data and remove 50 percent of the data
@@ -101,7 +101,7 @@ def train_different_models():
 
 
 def main():
-    train_different_models()
+    train_models()
 
 if __name__ == "__main__":
-    train_different_models()
+    main()

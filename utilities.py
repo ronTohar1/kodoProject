@@ -2,12 +2,16 @@ NUMBER_OF_FILES = 310
 NUMBER_OF_MALWARE = 150
 NUMBER_OF_BENIGN = NUMBER_OF_MALWARE
 
-NAME_OF_CSV = "miners.csv"
-NAME_OF_MODEL = "miners_model.pkl"
 ONLY_STATIC = True
-MODEL_PATH="./models/" + NAME_OF_MODEL
-TRAINED_MODEL_PATH="./trained_models/" + NAME_OF_MODEL
 
+DATASET_PATH = "miners.csv"
+MODEL_PATH="./models/" + "miners_model.pkl"
+
+DIKE_DS_PATH = "../DikeDataset-main"
+DIKE_MALWARE = "files/malware"
+DIKE_BENIGN = "files/benign"
+DIKE_MAL_LABELS = "labels/malware.csv"
+DIKE_BENIGN_LABELS = "labels/benign.csv"
 
 MINERS_PATH = "../binaries/miners"
 MALWARE_PATH = "../binaries/malware"

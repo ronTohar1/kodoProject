@@ -1,30 +1,36 @@
 import psutil
 
-def check_high_resource_utilization(process_name):
-    for process in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_info', 'io_counters', 'connections']):
-        if process.info['name'] == process_name:
-            # Check CPU usage
-            if process.info['cpu_percent'] > 50:
-                print(f"Process {process_name} is using high CPU: {process.info['cpu_percent']}%")
-            
-            # Check memory usage 100 MB
-            mem = process.info['memory_info']
-            if mem.rss > 100 * 1024 * 1024:
-                print(f"Process {process_name} is using high memory: {mem.rss / 1024 / 1024} MB")
-            
-            # Check disk I/O
-            io = process.info['io_counters']
-            if io.read_bytes + io.write_bytes > 100 * 1024 * 1024:
-                print(f"Process {process_name} is performing high disk I/O: {io.read_bytes + io.write_bytes / 1024 / 1024} MB")
-            
-            # Check network I/O
-            net = process.info['connections']
-            if len(net) > 0:
-                sent = sum([c.info['bytes_sent'] for c in net if c.info['type'] == psutil.SOCK_STREAM])
-                recv = sum([c.info['bytes_recv'] for c in net if c.info['type'] == psutil.SOCK_STREAM])
-                if sent + recv > 100 * 1024 * 1024:
-                    print(f"Process {process_name} is performing high network I/O: {(sent + recv) / 1024 / 1024} MB")
+def get_process_utilization(process):
+    try:
+        # Get CPU utilization
+        cpu_utilization = process.cpu_percent()
 
-# Example usage
-check_high_resource_utilization("miner.exe")
+        # Get network traffic information
+        net_io_counters = process.io_counters()
+        sent = net_io_counters.bytes_sent
+        recv = net_io_counters.bytes_recv
 
+        # Get disk I/O information
+        disk_io_counters = process.io_counters()
+        read_count = disk_io_counters.read_count
+        write_count = disk_io_counters.write_count
+        read_bytes = disk_io_counters.read_bytes
+        write_bytes = disk_io_counters.write_bytes
+
+        # Get memory information
+        memory_info = process.memory_info()
+        memory_utilization = memory_info.rss / (1024 ** 2)
+
+        # Print the information
+        print("Process name:", process.name())
+        print("CPU utilization:", cpu_utilization)
+        print("Bytes sent:", sent)
+        print("Bytes received:", recv)
+        print("Read count:", read_count)
+        print("Write count:", write_count)
+        print("Read bytes:", read_bytes)
+        print("Write bytes:", write_bytes)
+        print("Memory utilization:", memory_utilization, "MB")
+        print("")
+    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+        pass

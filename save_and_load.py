@@ -10,5 +10,5 @@ def load_model():
         return pickle.load(f)
 
 def load_dataset():
-    with open(NAME_OF_CSV, 'rb') as f:
+    with open(DATASET_PATH, 'rb') as f:
         return pickle.load(f)

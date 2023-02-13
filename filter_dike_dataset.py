@@ -1,14 +1,13 @@
 import os
-from utilities import MALWARE_PATH, BENIGN_PATH, MINERS_PATH, MINER_LABEL, NON_MINER_LABEL, NUMBER_OF_FILES
+from utilities import *
 import pandas as pd
 
 
-ds_path = "../DikeDataset-main"
-malwares_path = os.path.join(ds_path, "files/malware")
-benigns_path = os.path.join(ds_path, "files/benign")
+malwares_path = os.path.join(DIKE_DS_PATH, DIKE_MALWARE)
+benigns_path = os.path.join(DIKE_DS_PATH, DIKE_BENIGN)
 
-malware_csv = os.path.join(ds_path, "labels/malware.csv")
-benign_csv = os.path.join(ds_path, "labels/benign.csv")
+malware_csv = os.path.join(DIKE_DS_PATH,DIKE_MAL_LABELS)
+benign_csv = os.path.join(DIKE_DS_PATH, DIKE_BENIGN_LABELS)
 
 NUMBER_OF_GENERIC_MALWARES = 200
 NUMBER_OF_BENIGNS = 200
@@ -31,5 +30,9 @@ def get_benigns():
     for hash in hashes[:NUMBER_OF_BENIGNS]:
         os.rename(os.path.join(benigns_path, f"{hash}.exe"), os.path.join(BENIGN_PATH, f"{hash}.exe"))
 
-get_generic_malware()
-get_benigns()
+def main():
+    get_generic_malware()
+    get_benigns()
+
+if __name__ == "__main__":
+    main()
