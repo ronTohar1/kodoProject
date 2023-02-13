@@ -31,5 +31,5 @@ def get_benigns():
     for hash in hashes[:NUMBER_OF_BENIGNS]:
         os.rename(os.path.join(benigns_path, f"{hash}.exe"), os.path.join(BENIGN_PATH, f"{hash}.exe"))
 
-# get_generic_malware()
-# get_benigns()
+get_generic_malware()
+get_benigns()

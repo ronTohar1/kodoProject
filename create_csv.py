@@ -8,7 +8,7 @@ import entropy as ent
 import pickle
 from tqdm import tqdm
 from utilities import *
-SAVE_EVERY = 20
+SAVE_EVERY = 30
 network_functions = [
     "connect",
     "send",
@@ -48,7 +48,8 @@ def add_directory(df, directory, label, num_of_files):
     counter = 0
     for file in tqdm(os.listdir(directory)[:num_of_files]):
         if counter > 0 and counter % SAVE_EVERY == 0:
-            df.to_csv(NAME_OF_CSV)
+            df.to_csv(NAME_OF_CSV + f"_{counter}.csv", index=False)
+        print("Adding file: " + file)
         file = os.path.join(directory, file)
         # get the imports of each malware
         imports = find_imports.get_file_imports(file)
@@ -79,6 +80,7 @@ def add_directory(df, directory, label, num_of_files):
         new_row = pd.Series(new_row)
         # add row using pd.concat
         df = pd.concat([df, new_row.to_frame().T], ignore_index=True, sort=False)
+        counter +=1
     return df
 
 # Create a df file with the features and the labels for each Malware

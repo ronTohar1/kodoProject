@@ -19,3 +19,5 @@ def main():
     for miner_file in os.listdir(miners_dir):
         if miner_file not in miners:
             os.remove(os.path.join(miners_dir, miner_file))
+
+main()
