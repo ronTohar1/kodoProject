@@ -7,13 +7,19 @@ from utilization import get_process_utilization
 from create_csv import reload_features, get_file_row
 
 def get_process_prediction(process, model, features):
-    process_path = process.exe()
-    if process_path.endswith(".exe"):
-        row = get_file_row(process_path, features, 0)
-        print(row.to_frame())
-        # prediction = model.predict(row.to_frame().T)
-        # return prediction
-    return None
+    try:
+        process_path = process.exe()
+        if process_path.endswith(".exe"):
+            print("EXE ------", process.name()+ " path = ", process_path)
+            row = get_file_row(process_path, features, 0)
+            print(row.to_frame().T)
+            # prediction = model.predict(row.to_frame().T)
+            # return prediction
+        else:
+            print("Not an exe file: ", process.name())
+    except (psutil.AccessDenied, psutil.ZombieProcess, FileNotFoundError, pefile.PEFormatError):
+        print("Access denied to process: " + process.name())
+
 def main():
     model = load_model()
     features = reload_features()
@@ -21,5 +27,7 @@ def main():
     processes = psutil.process_iter()
     for process in processes:
         # utilization = get_process_utilization(process)
-        row = get_row_from_process(process)
+        row = get_process_prediction(process, model, features)
 
+if __name__ == "__main__":
+    main()

@@ -31,4 +31,5 @@ def main():
         entropy = binary_file_entropy(filename)
     return entropy
 
-main()
+if __name__ == "__main__":
+    main()
