@@ -8,6 +8,8 @@ from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from train_model import load_dataset, load_model, save_model
 from utilities import *
+
+
 def train_different_models():
     # Load the data
     data = load_dataset()
@@ -61,6 +63,15 @@ def train_different_models():
         recall = recall_score(y_test, y_pred)
         precision = precision_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred)
+
+        print("Model: ", type(model).__name__)
+        print("Best parameters: ", grid_search.best_params_)
+        print("Accuracy: ", accuracy)
+        print("Recall: ", recall)
+        print("Precision: ", precision)
+        print("F1 score: ", f1)
+
+
         if accuracy > best_accuracy:
             best_model = grid_search.best_estimator_
             best_accuracy = accuracy
@@ -75,7 +86,7 @@ def train_different_models():
     print("Best F1 score: ", best_f1)
 
     # Save the best model
-    save_model(best_model, MODEL_PATH)
+    save_model(best_model)
 
     
 if __name__ == "__main__":

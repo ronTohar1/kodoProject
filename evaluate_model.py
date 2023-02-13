@@ -10,6 +10,7 @@ from sklearn.model_selection import cross_val_predict, cross_val_score, KFold
 from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
+from sklearn.model_selection import train_test_split
 from train_model import load_model, load_dataset
 
 def evaluate_by_epochs():
@@ -64,14 +65,16 @@ def evaluate_by_epochs():
 
 def evaluate_by_kfold():
     mlp = load_model()
-    mlp.verbose=2
-    mlp.max_iter=135
+    mlp.verbose = 10
     df = load_dataset()
-    X = df.drop("label", axis=1)
-    y = df["label"]
+    X = df.iloc[:, :-1].values
+    y = df.iloc[:, -1].values
+
+    # Split the data into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
     kfold = KFold(n_splits=5)
 
-    mlp.fit(X, y)
+    # mlp.fit(X, y)
     # Perform k-fold cross-validation and get predictions
     predictions = cross_val_predict(mlp, X, y, cv=kfold)
 
@@ -95,7 +98,7 @@ def evaluate_by_kfold():
     plt.show()    
 
 def main():
-    evaluate_by_epochs()
+    evaluate_by_kfold()
 
 if __name__ == "__main__":
     main()
