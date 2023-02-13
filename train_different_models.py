@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from train_model import load_dataset, load_model, save_model
 from utilities import *
-
+from matplotlib import pyplot as plt
 
 def train_different_models():
     # Load the data
@@ -84,6 +84,12 @@ def train_different_models():
     print("Best recall: ", best_recall)
     print("Best precision: ", best_precision)
     print("Best F1 score: ", best_f1)
+
+    plt.plot(['accuracy', 'recall', 'precision', 'f1_score'], [best_accuracy, best_recall, best_precision, best_f1])
+    plt.xlabel('Metric')
+    plt.ylabel('Score')
+    plt.title('Neural Network Performance')
+    plt.show()    
 
     # Save the best model
     save_model(best_model)
