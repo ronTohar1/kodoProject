@@ -13,6 +13,11 @@ from matplotlib import pyplot as plt
 def train_different_models():
     # Load the data
     data = load_dataset()
+    # shuffle data and remove 50 percent of the data
+    data = data.sample(frac=1).reset_index(drop=True)
+    data = data.iloc[:int(len(data)/3), :]
+
+
     X = data.iloc[:, :-1].values
     y = data.iloc[:, -1].values
 

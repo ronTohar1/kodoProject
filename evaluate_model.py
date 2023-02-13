@@ -64,12 +64,19 @@ def evaluate_by_epochs():
     plt.show()
 
 def evaluate_model():
-    mlp = load_model()
+    # mlp = load_model()
+    mlp = MLPClassifier(hidden_layer_sizes=(30,30), activation='relu', solver='adam', max_iter=100 , alpha=0.1)
     mlp.verbose = 10
-    df = load_dataset()
-    X = df.iloc[:, :-1].values
-    y = df.iloc[:, -1].values
+    data = load_dataset()
+    data = data.sample(frac=1).reset_index(drop=True)
+    data = data.iloc[:int(len(data)/3), :]
 
+
+    X = data.iloc[:, :-1].values
+    y = data.iloc[:, -1].values
+
+    # Split the data into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
     # Split the data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
     kfold = KFold(n_splits=5)
