@@ -11,18 +11,18 @@ def get_process_prediction(process, model, features):
     try:
         process_path = process.exe()
         if process_path.endswith(".exe"):
-            print("EXE ------", process.name()+ " path = ", process_path)
+            # print("EXE ------", process.name()+ " path = ", process_path)
             row = get_file_row(str(process_path), features, 0)
             # remove row["label"]
             row = row.drop("label")
-            print(row.to_frame().T)
-            prediction = model.predict(row.to_frame().T)
+            # print(row.to_frame().T)
+            prediction = model.predict(row.to_frame().T.values)
             return prediction
         else:
-            print("Not an exe file: ", process.name())
+            # print("Not an exe file: ", process.name())
             return None
     except (psutil.AccessDenied, psutil.ZombieProcess, FileNotFoundError, pefile.PEFormatError):
-        print("Access denied to process: " + process.name())
+        # print("Access denied to process: " + process.name())
         return None
 
 
@@ -35,7 +35,7 @@ def main():
         # utilization = get_process_utilization(process)
         row = get_process_prediction(process, model, features)
         if row is not None:
-            print("Prediction: ", row)
+            print(f"Prediction of {process.name()}: ", row)
             print("--------------------------------------------------")
 if __name__ == "__main__":
     main()
