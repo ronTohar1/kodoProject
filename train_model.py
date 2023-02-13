@@ -90,11 +90,24 @@ def train_models():
     print("Best precision: ", best_precision)
     print("Best F1 score: ", best_f1)
 
-    plt.plot(['accuracy', 'recall', 'precision', 'f1_score'], [best_accuracy, best_recall, best_precision, best_f1])
-    plt.xlabel('Metric')
-    plt.ylabel('Score')
-    plt.title('Neural Network Performance')
-    plt.show()    
+  
+    x = [1, 2, 3, 4]
+    y = [best_accuracy, best_recall, best_precision, best_f1]
+
+    fig, ax = plt.subplots()
+    ax.scatter(x, y)
+
+    ax.set_xlim([0, 5])
+    ax.set_ylim([0.8, 1])
+
+    ax.set_xticks([1, 2, 3, 4])
+    ax.set_xticklabels(['Accuracy', 'Recall', 'Precision', 'F1'])
+    ax.set_yticks([ 0.9, 0.95,1])
+
+    ax.set_xlabel('Metric')
+    ax.set_ylabel('Value')
+
+    plt.show()
 
     # Save the best model
     save_model(best_model)

@@ -12,5 +12,4 @@ def load_model():
 
 def load_dataset():
     df = pd.read_csv(DATASET_PATH, index_col=0)
-    print(df)
     return df
