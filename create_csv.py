@@ -41,7 +41,7 @@ def reload_features():
         features = pickle.load(f)
     return features
 
-def get_file_row(file, features, label):
+def get_file_row(file, features, label, put_strings=None):
     imports = find_imports.get_file_imports(file)
     # get the entropy of each malware
     entropy = ent.binary_file_entropy(file)
@@ -68,6 +68,11 @@ def get_file_row(file, features, label):
         else:
             new_row[feature] = 0
     new_row = pd.Series(new_row)
+    # Adding strings if wanted
+    if put_strings is not None:
+        put_strings.append(strings)
+
+    # return the new row
     return new_row
 
 def add_directory(df, directory, label, num_of_files):
